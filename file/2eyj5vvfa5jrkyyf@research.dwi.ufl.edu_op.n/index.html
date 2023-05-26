@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<style>
+    @-ms-viewport { width: 100vw ; min-zoom: 100% ; zoom: 100% ; }          @viewport { width: 100vw ; min-zoom: 100% zoom: 100% ; }
+    @-ms-viewport { user-zoom: fixed ; min-zoom: 100% ; }                   @viewport { user-zoom: fixed ; min-zoom: 100% ; }
+</style>
+<script type="text/javascript" src="../../js/opn.js"></script>
+<title>JSTokenizer</title>
+<script type="text/javascript">
+var my_program=function()
+{
+let oid="2eyj5vvfa5jrkyyf@research.dwi.ufl.edu/op.n";
+let command='';
+if(location.search.indexOf('?')==0){
+ 	let i=location.search.indexOf('&');
+	if(i==-1) command=location.search.substring(1);
+ 	else command=location.search.substring(1,i);}
+let embed=false; if(command=='embed')embed=true;
+console.log(command);
+opn.cloud.getObject(oid).whenReady().then((o)=>{
+new opn.App().load(opn.viewers['OS']).then((Assets)=>{
+let os=new Assets.opnOS({parentDiv:opn.getScreen()});	
+let app=null;
+if(command.indexOf('code')==0){
+		app=os.openApp({initapp:true,appID:opn.viewers['Code'],input:o});
+	}
+	else if(command.indexOf('api')==0){
+		app=os.openApp({initapp:true,appID:opn.viewers['API'],input:oid});
+	}else{
+		if(o.getSystemProperty('OPEN')){
+			app=os.openApp({initapp:true,appID:o.getSystemProperty('OPEN'),input:oid});
+		} else if (o.getSystemProperty('CLASS')){
+			let c=o.getSystemProperty('CLASS');
+			if(c=='List'){
+				app=os.openApp({initapp:true,appID:opn.viewers['List'],input:oid});
+			}else if(c=='Image'){
+				app=os.openApp({initapp:true,appID:opn.viewers['Image'],input:oid});
+			}else if(c=='User'){
+				app=os.openApp({initapp:true,appID:opn.viewers['User'],input:oid});
+			}else{
+				app=os.openApp({initapp:true,fullscreen:embed,appID:oid});
+			}
+		}
+		else {
+			app=os.openApp({initapp:true,fullscreen:embed,appID:oid});
+		}
+	}
+		app.getWindow().maximize();
+	});
+	}).otherwise(()=>{
+		console.log('This object is not available');
+ });
+});
+}
+</script>
+</head>
+<body onload="opn.run(my_program)" style="margin:0px;background:#000;color:#888;"></body>
+</html>
