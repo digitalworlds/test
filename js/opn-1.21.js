@@ -280,7 +280,7 @@ OPNAPI.prototype.run=function(program,options){
 	});
 };
 
-OPNAPI.prototype.defaultStart(oid)
+OPNAPI.prototype.defaultStart=function(oid)
 {
 	let command='';
 if(location.search.indexOf('?')==0){
