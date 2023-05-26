@@ -14,48 +14,7 @@
 <script type="text/javascript">
 var my_program=function()
 {
-let oid="irysc0psq1omvunq@research.dwi.ufl.edu/op.n";
-let command='';
-if(location.search.indexOf('?')==0){
- 	let i=location.search.indexOf('&');
-	if(i==-1) command=location.search.substring(1);
- 	else command=location.search.substring(1,i);}
-let embed=false; if(command=='embed')embed=true;
-console.log(command);
-opn.cloud.getObject(oid).whenReady().then((o)=>{
-new opn.App().load(opn.viewers['OS']).then((Assets)=>{
-let os=new Assets.opnOS({parentDiv:opn.getScreen()});	
-let app=null;
-if(command.indexOf('code')==0){
-		app=os.openApp({initapp:true,appID:opn.viewers['Code'],input:o});
-	}
-	else if(command.indexOf('api')==0){
-		app=os.openApp({initapp:true,appID:opn.viewers['API'],input:oid});
-	}else{
-		if(o.getSystemProperty('OPEN')){
-			app=os.openApp({initapp:true,appID:o.getSystemProperty('OPEN'),input:oid});
-		} else if (o.getSystemProperty('CLASS')){
-			let c=o.getSystemProperty('CLASS');
-			if(c=='List'){
-				app=os.openApp({initapp:true,appID:opn.viewers['List'],input:oid});
-			}else if(c=='Image'){
-				app=os.openApp({initapp:true,appID:opn.viewers['Image'],input:oid});
-			}else if(c=='User'){
-				app=os.openApp({initapp:true,appID:opn.viewers['User'],input:oid});
-			}else{
-				app=os.openApp({initapp:true,fullscreen:embed,appID:oid});
-			}
-		}
-		else {
-			app=os.openApp({initapp:true,fullscreen:embed,appID:oid});
-		}
-	}
-		app.getWindow().maximize();
-	});
-	}).otherwise(()=>{
-		console.log('This object is not available');
- });
-});
+opn.defaultStart("irysc0psq1omvunq@research.dwi.ufl.edu/op.n");
 }
 </script>
 </head>
