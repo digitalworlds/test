@@ -786,7 +786,7 @@ OPNAPI.prototype.postHttp=function(url,data,mime,responseType,withCredentials,ti
 	});
 	
 	
-	var send=()=>{
+	var snd=()=>{
 		var file_request=new XMLHttpRequest();
 		p.setObject(file_request);
 		file_request.open("POST",url,true);
@@ -807,7 +807,7 @@ OPNAPI.prototype.postHttp=function(url,data,mime,responseType,withCredentials,ti
 				else if(file_request.status==0)
 				{
 					console.log('Internet Error...');
-					opn.wait({seconds:5}).then(send);
+					opn.wait({seconds:5}).then(snd);
 				}
 				else
 				{
@@ -835,7 +835,7 @@ OPNAPI.prototype.postHttp=function(url,data,mime,responseType,withCredentials,ti
 		file_request.send(msg);
 	}
 	
-	send();
+	snd();
 	
 	return p;
 };
