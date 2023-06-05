@@ -778,8 +778,12 @@ OPNAPI.prototype.loadAsLib=function(input,progress){
 
 OPNAPI.prototype.postHttp=function(url,data,mime,responseType,withCredentials,timeout)
 {
+	
+	var p=new opnPromise();
+	
+	
 	var file_request=new XMLHttpRequest();
-	var p=new opnPromise(file_request);
+	p.setObject(file_request);
 	p.catch(function(){
 		console.log(p);
 		console.log('E');
@@ -823,6 +827,8 @@ OPNAPI.prototype.postHttp=function(url,data,mime,responseType,withCredentials,ti
 	}
 	opn.progress.oneMoreToDo();
 	file_request.send(msg);
+	
+	
 	return p;
 };
 
