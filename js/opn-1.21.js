@@ -787,6 +787,7 @@ OPNAPI.prototype.postHttp=function(url,data,mime,responseType,withCredentials,ti
 	
 	
 	var snd=()=>{
+		console.log("sending request to "+url+" ...");
 		var file_request=new XMLHttpRequest();
 		p.setObject(file_request);
 		file_request.open("POST",url,true);
