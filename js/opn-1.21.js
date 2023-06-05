@@ -40,7 +40,8 @@ function OPNAPI()
 	this.global={};
 	this.lib_versions={
 		"opn.cloud":"12",
-		"opn.cloud-encoder":"1"
+		"opn.cloud-encoder":"1",
+		"opn.live":"4"
 		};
 		
 	this.lib_index=["opn.cloud"];
@@ -777,51 +778,65 @@ OPNAPI.prototype.loadAsLib=function(input,progress){
 
 OPNAPI.prototype.postHttp=function(url,data,mime,responseType,withCredentials,timeout)
 {
-	var file_request=new XMLHttpRequest();
+	
 	var p=new opnPromise(file_request);
 	p.catch(function(){
 		console.log(p);
 		console.log('E');
 	});
-	file_request.open("POST",url,true);
-	if(timeout)
-	{
-		file_request.timeout = 10000;
-		file_request.ontimeout=function(){p.callCatch();};
-	}
-	file_request.onreadystatechange=function()
-	{
-		if (file_request.readyState==4)
+	
+	
+	let send=()=>{
+		var file_request=new XMLHttpRequest();
+		p.setObject(file_request);
+		file_request.open("POST",url,true);
+		if(timeout)
 		{
-			if(file_request.status==200)
+			file_request.timeout = 10000;
+			file_request.ontimeout=function(){p.callCatch();};
+		}
+		file_request.onreadystatechange=function()
+		{
+			if (file_request.readyState==4)
 			{
-				opn.progress.oneMoreDone();
-				p.callThen();
-			}
-			else
-			{
-				opn.progress.oneMoreDone();
-				p.callCatch();
+				if(file_request.status==200)
+				{
+					opn.progress.oneMoreDone();
+					p.callThen();
+				}
+				else if(file_request.status==0)
+				{
+					console.log('Internet Error...');
+					opn.wait({seconds:5}).then(send);
+				}
+				else
+				{
+					opn.progress.oneMoreDone();
+					p.callCatch();
+				}
 			}
 		}
-	}
-	if(mime) file_request.overrideMimeType(mime);
-	else file_request.overrideMimeType("text/plain; charset=x-user-defined");
-	if(responseType)file_request.responseType=responseType;
-	if(withCredentials)file_request.withCredentials=true;
-	file_request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	var msg="";
-	if(typeof data!=='undefined')
-	{
-		var i=0;
-		for(v in data)
+		if(mime) file_request.overrideMimeType(mime);
+		else file_request.overrideMimeType("text/plain; charset=x-user-defined");
+		if(responseType)file_request.responseType=responseType;
+		if(withCredentials)file_request.withCredentials=true;
+		file_request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		var msg="";
+		if(typeof data!=='undefined')
 		{
-			if(i==0){msg=v+"="+data[v];i+=1}
-			else msg+="&"+v+"="+data[v];
+			var i=0;
+			for(v in data)
+			{
+				if(i==0){msg=v+"="+data[v];i+=1}
+				else msg+="&"+v+"="+data[v];
+			}
 		}
+		opn.progress.oneMoreToDo();
+		file_request.send(msg);
 	}
-	opn.progress.oneMoreToDo();
-	file_request.send(msg);
+	
+	send();
+	
 	return p;
 };
 
