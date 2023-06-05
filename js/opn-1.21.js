@@ -781,7 +781,7 @@ OPNAPI.prototype.postHttp=function(url,data,mime,responseType,withCredentials,ti
 	
 	var p=new opnPromise();
 	
-	
+	let send=()=>{
 	var file_request=new XMLHttpRequest();
 	p.setObject(file_request);
 	p.catch(function(){
@@ -802,6 +802,11 @@ OPNAPI.prototype.postHttp=function(url,data,mime,responseType,withCredentials,ti
 			{
 				opn.progress.oneMoreDone();
 				p.callThen();
+			}
+			else if(file_request.status==0)
+			{
+				console.log('Internet connection error ...');
+				opn.wait({seconds:5}).then(send);	
 			}
 			else
 			{
@@ -827,8 +832,8 @@ OPNAPI.prototype.postHttp=function(url,data,mime,responseType,withCredentials,ti
 	}
 	opn.progress.oneMoreToDo();
 	file_request.send(msg);
-	
-	
+	};
+	send();
 	return p;
 };
 
