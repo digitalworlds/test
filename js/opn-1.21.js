@@ -252,7 +252,7 @@ OPNAPI.prototype.run=function(program,options){
 	  {
 		  opt.progress=progress;
 		  opt.div=document.body;
-		  if(document.body.firstElementChild)document.body.firstElementChildremove();
+		  if(document.body.firstElementChild)document.body.firstElementChild.remove();
 		  opn.showProgress(opt);
 	  }
 			
