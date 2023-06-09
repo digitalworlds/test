@@ -69,9 +69,8 @@
 							}
 						}
 						app.getWindow().maximize();
-						app.getProgress().whenDone().then(()=>{
-							opn.getProgress().oneMoreDone();
-							return true;
+						app.getProgress().whenProgress().then((p)=>{
+							console.log(p.getValue())
 						})
 					});
 				}).otherwise(()=>{
