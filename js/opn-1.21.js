@@ -385,6 +385,7 @@ OPNAPI.prototype.showProgress=function(options){
 		  pr.whenDone().then(function(p)
 		  {
 			 l.remove();
+			 return true;
 		  });
 	}
 	return l;

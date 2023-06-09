@@ -69,6 +69,10 @@
 							}
 						}
 						app.getWindow().maximize();
+						app.getProgress().whenDone().then(()=>{
+							opn.getProgress().oneMoreDone();
+							return true;
+						})
 					});
 				}).otherwise(()=>{
 					console.log('This object is not available');
