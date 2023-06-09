@@ -41,6 +41,8 @@
 					new opn.App().load(opn.viewers['OS']).then((Assets)=>{
 						let os=new Assets.opnOS({parentDiv:opn.getScreen()});	
 						
+						opn.getProgress().oneMoreDone();
+						
 						let app=null;
 						
 						if(command.indexOf('/code')==0){
@@ -69,9 +71,6 @@
 							}
 						}
 						app.getWindow().maximize();
-						app.getProgress().whenProgress().then((p)=>{
-							console.log(p.getValue())
-						})
 					});
 				}).otherwise(()=>{
 					console.log('This object is not available');
