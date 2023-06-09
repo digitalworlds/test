@@ -28,6 +28,8 @@
 	<script type="text/javascript">
 	var my_program=function()
 	{
+		//opn.getProgress().oneMoreToDo();
+		opn.showProgress({div:document.body});
 		console.log('My program started');
 		if(opn.static && location.search.indexOf('?app/')==0)
 		{
