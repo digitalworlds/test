@@ -95,8 +95,8 @@
 			return;
 		}
 		if(opn.redirectServerSite){location.href=opn.redirectServerSite;return}
-		new opn.App().load(opn.landing);
-		opn.getProgress().oneMoreDone();
+		let app=new opn.App();app.load(opn.landing);
+		app.getProgress().whenProgress().then((p)=>{console.log(p)});
 	}
 	</script>
 </head>
