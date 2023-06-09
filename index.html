@@ -30,7 +30,6 @@
 	{
 		opn.getProgress().oneMoreToDo();
 		opn.showProgress({div:document.body});
-		console.log('My program started');
 		if(opn.static && location.search.indexOf('?app/')==0)
 		{
 			let loadapp=()=>{
@@ -72,6 +71,10 @@
 							}
 						}
 						app.getWindow().maximize();
+						app.getProgress().whenDone().then(()=>{
+							opn.getProgress().oneMoreDone();
+							return true;
+						});
 					});
 				}).otherwise(()=>{
 					console.log('This object is not available');
