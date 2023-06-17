@@ -30,7 +30,7 @@
 	{
 		opn.getProgress().oneMoreToDo();
 		opn.showProgress({div:document.body});
-		if(opn.static && location.search.indexOf('?app/')==0)
+		if(location.search.indexOf('?app/')==0)
 		{
 			let loadapp=()=>{
 				if(oid.indexOf('@')==-1)oid=oid+'@'+opn.cloudhost;
@@ -41,27 +41,19 @@
 						let os=new Assets.opnOS({parentDiv:opn.getScreen()});	
 						
 						opn.getProgress().oneMoreDone();
-						console.log(opn.getProgress().getValue())
-						
+				
 						let app=null;
 						
-						if(command.indexOf('/code')==0){
-							app=os.openApp({initapp:true,appID:opn.viewers['Code'],input:o});
-						}
-						else if(command.indexOf('/api')==0){
-							app=os.openApp({initapp:true,appID:opn.viewers['API'],input:oid});
+						if(command.length>1 && typeof opn.viewers[command.substring(1)]!=='undefined'){
+							app=os.openApp({initapp:true,appID:opn.viewers[command.substring(1)],input:o});
 						}else{
 							
 							if(o.getSystemProperty('OPEN')){
 								app=os.openApp({initapp:true,appID:o.getSystemProperty('OPEN'),input:oid});
 							} else if (o.getSystemProperty('CLASS')){
 								let c=o.getSystemProperty('CLASS');
-								if(c=='List'){
-									app=os.openApp({initapp:true,appID:opn.viewers['List'],input:oid});
-								}else if(c=='Image'){
-									app=os.openApp({initapp:true,appID:opn.viewers['Image'],input:oid});
-								}else if(c=='User'){
-									app=os.openApp({initapp:true,appID:opn.viewers['User'],input:oid});
+								if(typeof opn.viewers[c]!=='undefined'){
+									app=os.openApp({initapp:true,appID:opn.viewers[c],input:oid});
 								}else{
 									app=os.openApp({initapp:true,fullscreen:embed,appID:oid});
 								}
@@ -90,7 +82,8 @@
 				else command=location.search.substring(end);
 				if(command.indexOf('/embed')==0)embed=true;
 				let app_name=location.search.substring(5,end);
-				opn.http(location.href.substring(0,location.href.indexOf('?'))+'apps/'+app_name).then((request)=>{
+				let opt=(opn.static)?{}:{method:'post'};
+				opn.http(location.href.substring(0,location.href.indexOf('?'))+'apps/'+app_name,opt).then((request)=>{
 					oid=request.responseText.split("\n")[0];
 					loadapp();
 				})
